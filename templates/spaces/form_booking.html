@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+  <div class="card form-card" style="max-width:680px;">
+    <p class="eyebrow">Space Assignment</p>
+    <h2 class="section-title">{% if booking %}Edit Space Assignment for{% else %}Assign Space for{% endif %} {{ event.name }}</h2>
+    <p class="subtitle">
+      {% if booking %}
+      Update quantity for {{ booking.vendor.name }} in {{ booking.space_type.name }}. Increases create a charge and reductions create a credit.
+      {% else %}
+      Assign inventory with confidence and avoid overbooking during peak planning windows.
+      {% endif %}
+    </p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button type="submit">{% if booking %}Update Booking{% else %}Create Booking{% endif %}</button>
+        <a class="btn btn-secondary" href="/spaces/event/{{ event.id }}/">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

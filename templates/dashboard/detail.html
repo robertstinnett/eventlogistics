@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Event Intelligence</p>
+  <h2 class="section-title">Dashboard: {{ event.name }}</h2>
+  <p class="subtitle">Live operational pulse for attendance, inventory, and financial position.</p>
+  <div class="grid">
+    <div class="kpi"><div class="kpi-label">Vendors</div><div class="kpi-value">{{ metrics.vendors }}</div></div>
+    <div class="kpi"><div class="kpi-label">Performers</div><div class="kpi-value">{{ metrics.performers }}</div></div>
+    <div class="kpi"><div class="kpi-label">Exhibitors</div><div class="kpi-value">{{ metrics.exhibitors }}</div></div>
+    <div class="kpi"><div class="kpi-label">Total Spaces</div><div class="kpi-value">{{ metrics.total_spaces }}</div></div>
+    <div class="kpi"><div class="kpi-label">Booked Spaces</div><div class="kpi-value">{{ metrics.booked_spaces }}</div></div>
+    <div class="kpi"><div class="kpi-label">Occupancy</div><div class="kpi-value">{{ metrics.occupancy_rate|floatformat:1 }}%</div></div>
+    <div class="kpi"><div class="kpi-label">Billed</div><div class="kpi-value">{{ metrics.total_billed }}</div></div>
+    <div class="kpi"><div class="kpi-label">Paid</div><div class="kpi-value">{{ metrics.total_paid }}</div></div>
+    <div class="kpi"><div class="kpi-label">Outstanding</div><div class="kpi-value">{{ metrics.outstanding_balance }}</div></div>
+  </div>
+  <div class="card" style="margin-top: 1rem; margin-bottom: 0;">
+    <div class="kpi-label">Days Until Event Start</div>
+    <div class="kpi-value">{{ metrics.days_until_event }}</div>
+  </div>
+</div>
+{% endblock %}

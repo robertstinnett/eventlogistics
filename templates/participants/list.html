@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Event Roster</p>
+  <h2 class="section-title">Participants for {{ event.name }}</h2>
+  <p class="subtitle">Keep your participant directory current and easy to operate during planning and day-of execution.</p>
+  <div class="action-row">
+    <a class="btn" href="/participants/event/{{ event.id }}/vendors/new/">Add Vendor</a>
+    <a class="btn" href="/participants/event/{{ event.id }}/performers/new/">Add Performer</a>
+    <a class="btn" href="/participants/event/{{ event.id }}/exhibitors/new/">Add Exhibitor</a>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Vendors</h3>
+      <ul class="list-clean">
+        {% for item in vendors %}
+          <li><span>{{ item.name }}</span> <a href="/participants/event/{{ event.id }}/vendors/{{ item.id }}/edit/">Edit</a></li>
+        {% empty %}
+          <li class="empty-note">None</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Performers</h3>
+      <ul class="list-clean">
+        {% for item in performers %}
+          <li><span>{{ item.name }}</span> <a href="/participants/event/{{ event.id }}/performers/{{ item.id }}/edit/">Edit</a></li>
+        {% empty %}
+          <li class="empty-note">None</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Exhibitors</h3>
+      <ul class="list-clean">
+        {% for item in exhibitors %}
+          <li><span>{{ item.name }}</span> <a href="/participants/event/{{ event.id }}/exhibitors/{{ item.id }}/edit/">Edit</a></li>
+        {% empty %}
+          <li class="empty-note">None</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

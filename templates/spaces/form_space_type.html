@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+<div class="card form-card" style="max-width:680px;">
+  <p class="eyebrow">Inventory Setup</p>
+  <h2 class="section-title">{% if space_type %}Edit{% else %}Add{% endif %} Space Type for {{ event.name }}</h2>
+  <p class="subtitle">Define quantity, pricing, and optional amenities to simplify booking decisions for your team.</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.attributes }}
+
+    {% if form.non_field_errors %}
+      <div class="msg">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <label for="{{ form.name.id_for_label }}">Name</label>
+    {{ form.name }}
+    {% if form.name.errors %}<div class="msg">{{ form.name.errors }}</div>{% endif %}
+
+    <label for="{{ form.price.id_for_label }}">Price</label>
+    {{ form.price }}
+    {% if form.price.errors %}<div class="msg">{{ form.price.errors }}</div>{% endif %}
+
+    <label for="{{ form.fee_percent.id_for_label }}">Fee Percent</label>
+    {{ form.fee_percent }}
+    {% if form.fee_percent.errors %}<div class="msg">{{ form.fee_percent.errors }}</div>{% endif %}
+
+    <label for="{{ form.total_quantity.id_for_label }}">Total Quantity</label>
+    {{ form.total_quantity }}
+    {% if form.total_quantity.errors %}<div class="msg">{{ form.total_quantity.errors }}</div>{% endif %}
+
+    <div class="attr-section">
+      <strong>Attributes</strong>
+      <p class="subtitle" style="margin: 0.2rem 0 0.7rem;">Add zero or more attribute options and check the ones to include.</p>
+      <div id="attribute-items"></div>
+      <button id="add-attribute" type="button" class="btn" style="margin-top:0.6rem;">Add Attribute</button>
+    </div>
+
+    {% if form.attributes.errors %}<div class="msg">{{ form.attributes.errors }}</div>{% endif %}
+
+    <div class="form-actions">
+      <button type="submit">Save Space Type</button>
+      <a class="btn btn-secondary" href="/spaces/event/{{ event.id }}/">Cancel</a>
+    </div>
+  </form>
+</div>
+</div>
+
+<script>
+  (function () {
+    var hidden = document.getElementById("{{ form.attributes.id_for_label }}");
+    var container = document.getElementById("attribute-items");
+    var addBtn = document.getElementById("add-attribute");
+
+    function createRow(text, checked) {
+      var row = document.createElement("div");
+      row.className = "attr-row";
+
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = checked !== false;
+      checkbox.className = "attr-check";
+
+      var input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Example: Electric hookup";
+      input.value = text || "";
+      input.className = "attr-text";
+
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "Remove";
+      remove.className = "btn btn-muted";
+      remove.addEventListener("click", function () {
+        row.remove();
+      });
+
+      row.appendChild(checkbox);
+      row.appendChild(input);
+      row.appendChild(remove);
+      container.appendChild(row);
+    }
+
+    function parseInitial() {
+      if (!hidden || !hidden.value) {
+        return [];
+      }
+      try {
+        var parsed = JSON.parse(hidden.value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    var initial = parseInitial();
+    if (initial.length) {
+      initial.forEach(function (item) {
+        createRow(item, true);
+      });
+    }
+
+    addBtn.addEventListener("click", function () {
+      createRow("", true);
+    });
+
+    hidden.form.addEventListener("submit", function () {
+      var values = [];
+      var rows = container.querySelectorAll("div");
+      rows.forEach(function (row) {
+        var textInput = row.querySelector(".attr-text");
+        var checkedInput = row.querySelector(".attr-check");
+        var text = textInput ? textInput.value.trim() : "";
+        if (text && checkedInput && checkedInput.checked) {
+          values.push(text);
+        }
+      });
+      hidden.value = JSON.stringify(values);
+    });
+  })();
+</script>
+{% endblock %}

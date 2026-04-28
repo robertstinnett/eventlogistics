@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+  <div class="card form-card" style="max-width:680px;">
+    <p class="eyebrow">Space Management</p>
+    <h2 class="section-title">Delete Space Type: {{ space_type.name }}</h2>
+
+    {% if errors %}
+      {% for err in errors %}
+        <div class="callout">{{ err }}</div>
+      {% endfor %}
+    {% endif %}
+
+    {% if has_bookings %}
+      <p class="subtitle">
+        This space type has <strong>{{ bookings|length }} active booking(s)</strong>.
+        You must choose a replacement space type to re-assign all bookings before this type can be deleted.
+      </p>
+
+      <table style="margin-bottom:1rem;">
+        <thead>
+          <tr><th>Vendor</th><th>Quantity</th></tr>
+        </thead>
+        <tbody>
+          {% for b in bookings %}
+          <tr>
+            <td>{{ b.vendor.name }}</td>
+            <td>{{ b.quantity }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <form method="post">
+        {% csrf_token %}
+        <label for="replacement_space_type">Re-assign all bookings to:</label>
+        <select id="replacement_space_type" name="replacement_space_type" required>
+          <option value="">— Choose replacement space type —</option>
+          {% for st in other_types %}
+            <option value="{{ st.id }}" {% if request.POST.replacement_space_type == st.id|stringformat:"s" %}selected{% endif %}>
+              {{ st.name }} ({{ st.available_quantity }} available)
+            </option>
+          {% empty %}
+            <option disabled>No other space types exist for this event.</option>
+          {% endfor %}
+        </select>
+        <p class="subtitle" style="margin-bottom:0.8rem;">
+          Bookings will be moved to the selected type. Capacity and vendor uniqueness are validated before deletion.
+        </p>
+        <div class="form-actions">
+          <button type="submit" style="background:linear-gradient(135deg,#c0392b,#922b21);box-shadow:0 8px 18px rgba(192,57,43,0.28);">
+            Re-assign &amp; Delete
+          </button>
+          <a class="btn btn-secondary" href="/spaces/event/{{ event.id }}/">Cancel</a>
+        </div>
+      </form>
+
+    {% else %}
+      <p class="subtitle">
+        This space type has no active bookings. Deleting it is permanent and cannot be undone.
+      </p>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+          <button type="submit" style="background:linear-gradient(135deg,#c0392b,#922b21);box-shadow:0 8px 18px rgba(192,57,43,0.28);">
+            Delete Space Type
+          </button>
+          <a class="btn btn-secondary" href="/spaces/event/{{ event.id }}/">Cancel</a>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

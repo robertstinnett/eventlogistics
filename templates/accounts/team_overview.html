@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Team Access</p>
+  <h2 class="section-title">Team: {{ account.name }}</h2>
+  <p class="subtitle">Control collaborator permissions for operations, billing, and delivery workflows.</p>
+  <div class="action-row"><a class="btn" href="/team/invitations/new/">Invite Member</a></div>
+
+  <h3 class="section-title">Members</h3>
+  <table>
+    <thead><tr><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for m in memberships %}
+      <tr>
+        <td>{{ m.user.email }}</td>
+        <td><span class="status-pill">{{ m.role }}</span></td>
+        <td>
+          {% if is_owner and m.user_id != account.owner_id %}
+            <a href="/team/members/{{ m.id }}/role/">Change Role</a>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3"><div class="empty-state">No members yet. Invite your first teammate to collaborate.</div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3 class="section-title" style="margin-top:1rem;">Pending Invitations</h3>
+  <table>
+    <thead><tr><th>Email</th><th>Role</th><th>Accept URL</th></tr></thead>
+    <tbody>
+      {% for inv in invitations %}
+      <tr>
+        <td>{{ inv.email }}</td>
+        <td><span class="status-pill">{{ inv.role }}</span></td>
+        <td>/team/invitations/accept/{{ inv.token }}/</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3"><div class="empty-state">No pending invitations right now.</div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

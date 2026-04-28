@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+  <div class="card form-card" style="max-width:720px;">
+    <p class="eyebrow">New Event</p>
+    <h2 class="section-title">Create Event</h2>
+    <p class="subtitle">Set a clear schedule and status so your team can execute with confidence.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button type="submit">Save Event</button>
+        <a class="btn btn-secondary" href="/events/">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

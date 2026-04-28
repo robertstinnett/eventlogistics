@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+  {% if vendor %}
+  <div class="card form-card" style="max-width:680px;">
+    <p class="eyebrow">Space Assignments</p>
+    <h2 class="section-title">Assigned spaces for {{ vendor.name }}</h2>
+    <p class="subtitle">Assign or remove booth inventory without leaving the vendor record.</p>
+
+    <div class="callout" style="margin-bottom:1rem;">
+      <strong>Current assignments</strong>
+      {% if space_bookings %}
+      <ul class="list-clean" style="margin-top:0.65rem;">
+        {% for booking in space_bookings %}
+        <li>
+          <div style="display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;">
+            <span>{{ booking.space_type.name }} x {{ booking.quantity }}</span>
+            <form method="post" style="margin:0;">
+              {% csrf_token %}
+              <input type="hidden" name="booking_id" value="{{ booking.id }}">
+              <button type="submit" name="delete_space_booking" class="btn-muted">Delete Space</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p style="margin:0.65rem 0 0;">No spaces assigned yet.</p>
+      {% endif %}
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ space_form.as_p }}
+      <div class="form-actions">
+        <button type="submit" name="assign_space">Assign Space</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+
+  <div class="card form-card" style="max-width:680px;">
+    <p class="eyebrow">Participant Entry</p>
+    <h2 class="section-title">{{ title }} for {{ event.name }}</h2>
+    <p class="subtitle">Keep participant records clean so assignments and communication stay reliable.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button type="submit">Save</button>
+        <a class="btn btn-secondary" href="/participants/event/{{ event.id }}/">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

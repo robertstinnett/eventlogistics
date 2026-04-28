@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Event Control</p>
+  <h2 class="section-title">{{ event.name }}</h2>
+  <p class="subtitle">{{ event.description|default:"No description provided yet." }}</p>
+  <div class="grid" style="margin-top: 1rem;">
+    <div class="kpi">
+      <div class="kpi-label">Start</div>
+      <div class="kpi-value">{{ event.starts_at }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">End</div>
+      <div class="kpi-value">{{ event.ends_at }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Status</div>
+      <div class="kpi-value">{{ event.status }}</div>
+    </div>
+  </div>
+  <div class="action-group">
+    <div class="action-group-primary">
+      <a class="btn" href="/participants/event/{{ event.id }}/">Manage Participants</a>
+      <a class="btn" href="/spaces/event/{{ event.id }}/">Manage Spaces</a>
+      <a class="btn" href="/dashboard/event/{{ event.id }}/">Open Dashboard</a>
+    </div>
+    <div class="action-group-secondary">
+      <a href="/finance/event/{{ event.id }}/ledger/">Manage Ledger</a>
+      <a href="/finance/account/ledger/export.csv">Export Account Billing CSV</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

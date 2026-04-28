@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Financial Tracking</p>
+  <h2 class="section-title">Vendor Ledger: {{ event.name }}</h2>
+  <p class="subtitle">Monitor billed and collected revenue with an event-level audit trail.</p>
+  <div class="action-row">
+    <a class="btn" href="/finance/event/{{ event.id }}/ledger/new/">Add Ledger Entry</a>
+    <a class="btn" href="/finance/event/{{ event.id }}/ledger/export.csv">Export Event CSV</a>
+    <a class="btn" href="/finance/account/ledger/export.csv">Export Account CSV</a>
+    <a class="btn" href="/dashboard/event/{{ event.id }}/">Back to Dashboard</a>
+  </div>
+
+  <div class="grid">
+    <div class="kpi"><div class="kpi-label">Total Billed</div><div class="kpi-value">{{ total_billed }}</div></div>
+    <div class="kpi"><div class="kpi-label">Total Paid</div><div class="kpi-value">{{ total_paid }}</div></div>
+    <div class="kpi"><div class="kpi-label">Outstanding</div><div class="kpi-value">{{ outstanding }}</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Created</th><th>Vendor</th><th>Type</th><th>Amount</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      {% for entry in entries %}
+      <tr>
+        <td>{{ entry.created_at }}</td>
+        <td>{{ entry.vendor.name }}</td>
+        <td>{{ entry.entry_type }}</td>
+        <td>{{ entry.amount }}</td>
+        <td>{{ entry.note }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5"><div class="empty-state">No ledger entries yet. Add a charge or payment to start tracking balances.</div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

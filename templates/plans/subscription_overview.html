@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Billing Controls</p>
+  <h2 class="section-title">Billing and Plan</h2>
+  <p class="subtitle">Align plan limits with your event pipeline and operational pace.</p>
+  <div class="grid" style="margin-top: 1rem;">
+    <div class="kpi">
+      <div class="kpi-label">Account</div>
+      <div class="kpi-value" style="font-size:1.1rem;">{{ account.name }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Current Plan</div>
+      <div class="kpi-value" style="font-size:1.1rem;">{{ subscription.plan.name }}</div>
+      <div class="subtitle" style="margin-top:0.35rem;">{{ subscription.plan.code }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Billing Cycle</div>
+      <div class="kpi-value" style="font-size:1.1rem;">{{ subscription.get_billing_cycle_display }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Active/Upcoming Events</div>
+      <div class="kpi-value" style="font-size:1.1rem;">{{ active_event_count }} / {{ subscription.plan.max_active_events }}</div>
+    </div>
+  </div>
+  {% if subscription.current_period_end %}
+    <p class="subtitle" style="margin-top:0.8rem;"><strong>Current period ends:</strong> {{ subscription.current_period_end }}</p>
+  {% endif %}
+</div>
+
+<div class="card" style="max-width:720px;">
+  <h3 class="section-title">Change plan</h3>
+  {% if can_change %}
+    <p class="subtitle">Choose a plan and billing cycle that matches your next quarter of events.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Update subscription</button>
+    </form>
+  {% else %}
+    <div class="empty-state">Only account owners can update billing plans.</div>
+  {% endif %}
+</div>
+{% endblock %}

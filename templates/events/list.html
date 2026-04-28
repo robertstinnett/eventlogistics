@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Operations Console</p>
+  <div class="page-header">
+    <div>
+      <h2 class="section-title">Events</h2>
+      <p class="subtitle">Track schedule, ownership, and readiness across your account.</p>
+    </div>
+    {% if account %}
+      <a class="btn" href="/events/new/">Create Event</a>
+    {% endif %}
+  </div>
+  {% if account %}
+    <p class="subtitle">Account: <strong>{{ account.name }}</strong></p>
+  {% endif %}
+  <table>
+    <thead><tr><th>Name</th><th>Dates</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for event in events %}
+      <tr>
+        <td><strong>{{ event.name }}</strong></td>
+        <td><span class="muted">{{ event.starts_at }}</span> to <span class="muted">{{ event.ends_at }}</span></td>
+        <td><span class="status-pill">{{ event.status }}</span></td>
+        <td>
+          <a href="/events/{{ event.id }}/">Details</a> |
+          <a href="/participants/event/{{ event.id }}/">Participants</a> |
+          <a href="/spaces/event/{{ event.id }}/">Spaces</a> |
+          <a href="/dashboard/event/{{ event.id }}/">Dashboard</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No events yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

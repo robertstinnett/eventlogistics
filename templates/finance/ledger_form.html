@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+  <div class="card form-card" style="max-width:700px;">
+    <p class="eyebrow">Finance Entry</p>
+    <h2 class="section-title">Add Ledger Entry: {{ event.name }}</h2>
+    <p class="subtitle">Record charges, payments, and adjustments with clean notes for faster reconciliation.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button type="submit">Save Entry</button>
+        <a class="btn btn-secondary" href="/finance/event/{{ event.id }}/ledger/">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

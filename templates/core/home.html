@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="card" style="padding: 2rem; overflow: hidden; position: relative;">
+    <div style="position:absolute; width:260px; height:260px; right:-90px; top:-110px; background:rgba(223,111,76,0.14); border-radius:50%;"></div>
+    <div style="position:absolute; width:220px; height:220px; left:-90px; bottom:-130px; background:rgba(47,143,115,0.18); border-radius:50%;"></div>
+    <p style="margin:0 0 0.7rem; text-transform:uppercase; letter-spacing:0.12em; font-size:0.76rem; font-weight:700; color:#2f8f73;">Confident Event Operations</p>
+    <h1 style="max-width: 760px; font-size: clamp(2rem, 3.7vw, 3.25rem); margin-bottom: 0.7rem;">Sell out events with a workspace your team actually loves using.</h1>
+    <p style="max-width: 700px; font-size: 1.08rem; margin-bottom: 1.2rem;">
+      Plan faster, keep inventory accurate, and turn participant logistics into a polished experience
+      across vendors, performers, exhibitors, spaces, and billing.
+    </p>
+    <p>
+      <a class="btn" href="/events/">Open Events</a>
+      {% if not request.user.is_authenticated %}
+        <a class="btn btn-secondary" href="/accounts/register/">Start Free</a>
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Participant-First Workflows</h3>
+      <p>Track vendors, performers, and exhibitors in one place with quick edits and clean account scoping.</p>
+    </div>
+    <div class="card">
+      <h3>Inventory You Can Trust</h3>
+      <p>Manage space types and bookings with guardrails that prevent accidental over-allocation.</p>
+    </div>
+    <div class="card">
+      <h3>Ops Visibility</h3>
+      <p>Use dashboards, ledgers, and audit logs to keep your team aligned and stakeholders informed.</p>
+    </div>
+  </div>
+{% endblock %}

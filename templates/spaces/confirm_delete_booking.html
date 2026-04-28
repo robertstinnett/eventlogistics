@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-shell">
+  <div class="card form-card" style="max-width: 680px;">
+    <p class="eyebrow">Space Management</p>
+    <h2 class="section-title">Remove Space Assignment</h2>
+    <p class="subtitle">
+      This will unassign <strong>{{ booking.space_type.name }}</strong> from
+      <strong>{{ booking.vendor.name }}</strong> and add a negative ledger charge
+      for {{ booking.quantity }} space(s).
+    </p>
+
+    <table style="margin-bottom: 1rem;">
+      <thead>
+        <tr><th>Vendor</th><th>Space Type</th><th>Quantity</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ booking.vendor.name }}</td>
+          <td>{{ booking.space_type.name }}</td>
+          <td>{{ booking.quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-actions">
+        <button type="submit" style="background:linear-gradient(135deg,#c0392b,#922b21);box-shadow:0 8px 18px rgba(192,57,43,0.28);">
+          Remove Assignment
+        </button>
+        <a class="btn btn-secondary" href="/spaces/event/{{ event.id }}/">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

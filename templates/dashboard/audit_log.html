@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+  <h2>Audit Log</h2>
+  <p>Recent operational changes for {{ account.name }}.</p>
+</div>
+
+<div class="card">
+  {% if entries %}
+    <table>
+      <thead>
+        <tr>
+          <th>When</th>
+          <th>Actor</th>
+          <th>Action</th>
+          <th>Event</th>
+          <th>Target</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+          <tr>
+            <td>{{ entry.created_at|date:"Y-m-d H:i:s" }}</td>
+            <td>{% if entry.actor %}{{ entry.actor.email }}{% else %}System{% endif %}</td>
+            <td>{{ entry.action }}</td>
+            <td>{% if entry.event %}{{ entry.event.name }}{% else %}-{% endif %}</td>
+            <td>
+              {% if entry.target_type %}
+                {{ entry.target_type }}#{{ entry.target_id }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>{{ entry.message|default:"-" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No audit entries yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

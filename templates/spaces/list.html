@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <p class="eyebrow">Space Operations</p>
+  <h2 class="section-title">Spaces for {{ event.name }}</h2>
+  <p class="subtitle">Balance inventory, pricing, and assignments with clear real-time availability.</p>
+  <div class="action-row">
+    <a class="btn" href="/spaces/event/{{ event.id }}/types/new/">Add Space Type</a>
+    <a class="btn" href="/spaces/event/{{ event.id }}/bookings/new/">Assign Space to Vendor</a>
+  </div>
+</div>
+
+<div class="split-grid">
+  <div class="card">
+    <h3 class="section-title">Space Types</h3>
+  <table>
+    <thead><tr><th>Name</th><th>Total</th><th>Booked</th><th>Available</th><th>Price</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for st in space_types %}
+      <tr>
+        <td><strong>{{ st.name }}</strong></td><td>{{ st.total_quantity }}</td><td>{{ st.booked_quantity }}</td><td>{{ st.available_quantity }}</td><td>{{ st.price }}</td>
+        <td>
+          <a href="/spaces/event/{{ event.id }}/types/{{ st.id }}/edit/">Edit</a>
+          &nbsp;|
+          <a href="/spaces/event/{{ event.id }}/types/{{ st.id }}/delete/" style="color:#c0392b;">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No space types yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card">
+  <h3 class="section-title">Bookings</h3>
+  <table>
+    <thead><tr><th>Vendor</th><th>Space Type</th><th>Qty</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr>
+        <td>{{ b.vendor.name }}</td>
+        <td>{{ b.space_type.name }}</td>
+        <td>{{ b.quantity }}</td>
+        <td>
+          <a href="/spaces/event/{{ event.id }}/bookings/{{ b.id }}/edit/">Edit</a>
+          &nbsp;|
+          <a href="/spaces/event/{{ event.id }}/bookings/{{ b.id }}/delete/" style="color:#c0392b;">Unassign</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">No bookings yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}
